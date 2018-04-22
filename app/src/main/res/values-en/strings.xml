@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Kati</string>
+    <string name="settings_name">Setting</string>
+    <string name="behavior_notification_name">Patient behavior nottfication</string>
+    <string name="pill_notification_name">Pill nottfication</string>
+    <string name="token_label_name">Token</string>
+    <string name="copy_button_name">Copy</string>
+    <string name="date_label_name">Date</string>
+    <string name="warning_copy_name">copy to clipboard success!</string>
+    <string name="warning_date1_null_name">pls fill date1 frist!</string>
+    <string name="behavior_topic_name">Behavior</string>
+    <string name="pill_topic_name">Pill</string>
+    <string name="result_query_name">Found</string>
+    <string name="record_unit_name">Records</string>
+    <string name="copy_to_clipboard_name"></string>
+    <string name="message_title_label">Message</string>
+    <string name="pill_title_label">Pill</string>
+    <string name="behavior_title_label">Behavior</string>
+    <string name="lang_label">english</string>
+</resources>

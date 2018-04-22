@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "642042925714",
+    "firebase_url": "https://kati-a04e1.firebaseio.com",
+    "project_id": "kati-a04e1",
+    "storage_bucket": "kati-a04e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642042925714:android:ebbbbabeaa7a6c66",
+        "android_client_info": {
+          "package_name": "com.example.errortime.kati_read"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642042925714-srsehahltnnskvq6ml008l1073qti55m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHO4EylI1ZAtkJyXixwEhRm5nJ8zOLMKQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">กะทิ</string>
+    <string name="settings_name">ตั้งค่า</string>
+    <string name="behavior_notification_name">การแจ้งเตือนพฤติกรรมผู้ป่วย</string>
+    <string name="pill_notification_name">การแจ้งเตือนยา</string>
+    <string name="token_label_name">โทเค่น</string>
+    <string name="copy_button_name">คัดลอก</string>
+    <string name="copy_to_clipboard_name">คัดลอกไปยังคลิปบอร์ดแล้ว!</string>
+    <string name="date_label_name">ช่วงวัน</string>
+    <string name="warning_copy_name">คัดลอกไปยังคลิปบอร์ดแล้ว!</string>
+    <string name="warning_date1_null_name">กรุณณาใส่ข้อมูลช่วงวันที่แรกก่อน!</string>
+    <string name="behavior_topic_name">พฤติกรรมผู้ป่วย</string>
+    <string name="pill_topic_name">ยา</string>
+    <string name="result_query_name">พบข้อมูล</string>
+    <string name="record_unit_name">เรคคอร์ด</string>
+    <string name="message_title_label">ข้อความ</string>
+    <string name="pill_title_label">ยา</string>
+    <string name="behavior_title_label">พฤติกรรมผู้ป่วย</string>
+    <string name="lang_label">thai</string>
+</resources>

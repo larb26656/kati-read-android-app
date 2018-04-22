@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.errortime.kati_read.MainActivity">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/app_bar"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/behavior_notification_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/app_bar"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/notification_text_color"/>
+
+        <ImageView
+            android:id="@+id/behavior_notification_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/pill_notification_pic"
+            android:layout_alignStart="@+id/pill_notification_pic"
+            android:layout_below="@+id/behavior_notification_num_text"
+            app:srcCompat="@drawable/behavior_list"/>
+
+        <Button
+            android:id="@+id/behavior_notification_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_below="@+id/behavior_notification_pic"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="false"
+            android:text="@string/behavior_notification_name"/>
+
+        <TextView
+            android:id="@+id/pill_notification_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/behavior_notification_button"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/notification_text_color"
+            android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:id="@+id/pill_notification_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pill_notification_num_text"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@drawable/pill_list"/>
+
+        <Button
+            android:id="@+id/pill_notification_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pill_notification_pic"
+            android:layout_centerHorizontal="true"
+            android:text="@string/pill_notification_name"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
