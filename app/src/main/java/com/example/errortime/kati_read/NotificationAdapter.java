@@ -5,12 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.firebase.database.ChildEventListener;
-
-import java.util.ArrayList;
 
 /**
  * Created by Error Time on 10/18/2017.
@@ -18,18 +13,17 @@ import java.util.ArrayList;
 
 public class NotificationAdapter extends BaseAdapter{
         private Context context;
-        private ArrayList<String> notification_date_detail,notification_detail_detail;
+        private String[] notification_date, notification_detail;
 
-    public NotificationAdapter(Context context, ArrayList<String> notification_date_detail, ArrayList<String> notification_detail_detail) {
+    public NotificationAdapter(Context context, String[] notification_date_detail, String[] notification_detail_detail) {
         this.context = context;
-        this.notification_date_detail = notification_date_detail;
-        this.notification_detail_detail = notification_detail_detail;
-
+        this.notification_date = notification_date_detail;
+        this.notification_detail = notification_detail_detail;
     }
 
     @Override
     public int getCount() {
-        return notification_date_detail.size();
+        return notification_date.length;
     }
 
     @Override
@@ -50,8 +44,8 @@ public class NotificationAdapter extends BaseAdapter{
         TextView notification_date_text = (TextView) view1.findViewById(R.id.notification_date_text);
         TextView notification_detail_text = (TextView) view1.findViewById(R.id.notification_detail_text);
 
-        notification_date_text.setText(notification_date_detail.get(i));
-        notification_detail_text.setText(notification_detail_detail.get(i));
+        notification_date_text.setText(notification_date[i]);
+        notification_detail_text.setText(notification_detail[i]);
         return view1;
     }
 }

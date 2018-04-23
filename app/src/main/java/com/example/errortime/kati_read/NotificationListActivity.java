@@ -1,3 +1,4 @@
+package com.example.errortime.kati_read;/*
 package com.example.errortime.kati_read;
 
 import android.app.DatePickerDialog;
@@ -219,5 +220,221 @@ public class NotificationListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return date;
+    }
+}
+*/
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.Firebase;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class NotificationListActivity extends AppCompatActivity {
+    private FirebaseDatabase database;
+    private ListView notification_listview;
+    private TextView records_num_text ,topic_text;;
+    private EditText date1_edittext, date2_edittext;
+    private  String topic_name, condition1, condition2;
+    private String token = FirebaseInstanceId.getInstance().getToken();
+    private Calendar myCalendar = Calendar.getInstance();
+    private Query notification_data;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notification_list);
+        Intent myIntent = getIntent(); // gets the previously created intent
+        topic_name = myIntent.getStringExtra("topic_name");
+        topic_text = (TextView) findViewById(R.id.topic_text);
+        records_num_text = (TextView) findViewById(R.id.records_num_text);
+        date1_edittext = (EditText) findViewById(R.id.date1_edittext);
+        date2_edittext = (EditText) findViewById(R.id.date2_edittext);
+        notification_listview = (ListView) findViewById(R.id.notification_listview);
+        setCondition1(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        setCondition2(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        database = FirebaseDatabase.getInstance();
+        if (topic_name.equals("behavior")) {
+            topic_text.setText(R.string.behavior_topic_name);
+        } else {
+            topic_text.setText(R.string.pill_topic_name);
+        }
+        update_query(getCondition1(),getCondition2());
+
+        final DatePickerDialog.OnDateSetListener datepicker1 = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updatedate1();
+            }
+
+        };
+        final DatePickerDialog.OnDateSetListener datepicker2 = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updatedate2();
+            }
+
+        };
+        date1_edittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(NotificationListActivity.this, datepicker1, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        date2_edittext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (getCondition1() == null) {
+                    Toast.makeText(getApplicationContext(), R.string.warning_date1_null_name,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    DatePickerDialog dpd = new DatePickerDialog(NotificationListActivity.this, datepicker2, myCalendar
+                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH));
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+                    try {
+                        Date d = sdf.parse(String.valueOf(date1_edittext.getText()));
+                        dpd.getDatePicker().setMinDate(d.getTime());
+                        dpd.show();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private NotificationAdapter get_notification_adapter(List<NotificationModel> notification_list){
+        int list_length = notification_list.size();
+        Log.d("list length",String.valueOf(list_length));
+        String[] notification_date = new String[list_length];
+        String[] notification_detail = new String[list_length];
+        String notification_detail_lang_detect = "Notification_detail_"+getString(R.string.lang_label);
+        for(int i = 0; i < notification_list.size(); i++) {
+            notification_date[i] = notification_list.get(i).Notification_date_with_format;
+            try {
+                Field f = notification_list.get(i).getClass().getField(notification_detail_lang_detect);
+                notification_detail[i] = String.valueOf(f.get(notification_list.get(i)));
+            } catch (NoSuchFieldException e) {
+                notification_detail[i] = notification_list.get(i).Notification_detail_thai;
+            } catch (IllegalAccessException e) {
+                notification_detail[i] = notification_list.get(i).Notification_detail_thai;
+            }
+        }
+        NotificationAdapter adapter = new NotificationAdapter(getApplicationContext(),notification_date,notification_detail);
+        return adapter;
+    }
+
+    private void updatedate1() {
+        String myFormat1 = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf1 = new SimpleDateFormat(myFormat1, Locale.US);
+        String myFormat2 = "yyyyMMdd"; //In which you need put here
+        SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat2, Locale.US);
+        date1_edittext.setText(sdf1.format(myCalendar.getTime()));
+        setCondition1(sdf2.format(myCalendar.getTime()));
+        date2_edittext.setText(null);
+    }
+
+    private void updatedate2() {
+        String myFormat1 = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf1 = new SimpleDateFormat(myFormat1, Locale.US);
+        String myFormat2 = "yyyyMMdd"; //In which you need put here
+        SimpleDateFormat sdf2 = new SimpleDateFormat(myFormat2, Locale.US);
+        date2_edittext.setText(sdf1.format(myCalendar.getTime()));
+        setCondition2(sdf2.format(myCalendar.getTime()));
+        update_query(getCondition1(), getCondition2());
+    }
+
+    public String getCondition1() {
+        return condition1;
+    }
+
+    public String getCondition2() {
+        return condition2;
+    }
+
+    public void setCondition1(String date1) {
+        this.condition1 = date1 + "000000";
+    }
+
+    public void setCondition2(String date2) {
+
+        this.condition2 = date2 + "235959";
+    }
+
+
+    private void update_query(String date1, String date2) {
+        notification_data = database.getReference(FirebaseInstanceId.getInstance().getToken() + "/" + topic_name).orderByChild("Notification_date").startAt(date1).endAt(date2);
+        notification_data.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
+                List<NotificationModel> list = new ArrayList<NotificationModel>();
+                for (com.google.firebase.database.DataSnapshot child: dataSnapshot.getChildren()) {
+                    list.add(child.getValue(NotificationModel.class));
+                }
+                Comparator c = Collections.reverseOrder(new Sortbydate());
+                Collections.sort(list, c);
+                NotificationAdapter adapter = get_notification_adapter(list);
+                notification_listview.setAdapter(adapter);
+                String result_query_name = getResources().getString(R.string.result_query_name);
+                String record_unit_name = getResources().getString(R.string.record_unit_name);
+                records_num_text.setText(result_query_name + " " + String.valueOf(list.size()) + " " + record_unit_name);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+}
+class Sortbydate implements Comparator<NotificationModel>
+{
+    // Used for sorting in ascending order of
+    // roll number
+    public int compare(NotificationModel a, NotificationModel b)
+    {
+        return a.Notification_date.compareTo(b.Notification_date);
     }
 }
